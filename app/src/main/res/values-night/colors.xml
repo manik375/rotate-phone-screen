@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg">#0D0D10</color>
+    <color name="card">#17171B</color>
+    <color name="stroke">#26262C</color>
+    <color name="text_primary">#F4F4F6</color>
+    <color name="text_secondary">#9A9AA7</color>
+    <color name="track_off">#3A3A43</color>
+
+    <!-- Light status/navigation bar icons on the dark theme. -->
+    <bool name="light_bars">false</bool>
+</resources>

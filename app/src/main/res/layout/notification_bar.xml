@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/btn_auto"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_chip_idle"
+        android:contentDescription="@string/mode_auto"
+        android:padding="9dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_auto" />
+
+    <ImageView
+        android:id="@+id/btn_portrait"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_chip_idle"
+        android:contentDescription="@string/mode_portrait"
+        android:padding="9dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_portrait" />
+
+    <ImageView
+        android:id="@+id/btn_landscape"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_chip_idle"
+        android:contentDescription="@string/mode_landscape"
+        android:padding="9dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_landscape" />
+
+    <ImageView
+        android:id="@+id/btn_portrait_flip"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_chip_idle"
+        android:contentDescription="@string/mode_portrait_flip"
+        android:padding="9dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_portrait_flip" />
+
+    <ImageView
+        android:id="@+id/btn_landscape_flip"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_chip_idle"
+        android:contentDescription="@string/mode_landscape_flip"
+        android:padding="9dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_landscape_flip" />
+
+    <ImageView
+        android:id="@+id/btn_lock"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_chip_idle"
+        android:contentDescription="@string/mode_lock"
+        android:padding="9dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_lock" />
+
+    <ImageView
+        android:id="@+id/btn_off"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_chip_idle"
+        android:contentDescription="@string/cd_off"
+        android:padding="9dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_power" />
+</LinearLayout>

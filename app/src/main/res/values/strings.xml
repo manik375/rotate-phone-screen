@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pivot</string>
+    <string name="tagline">Hold your screen in any orientation.</string>
+
+    <string name="switch_title">Orientation lock</string>
+    <string name="state_on">On</string>
+    <string name="state_off">Off</string>
+    <string name="status_on">On · %1$s</string>
+    <string name="status_off">Off · follows system</string>
+    <string name="tile_off">Off</string>
+
+    <string name="mode_auto">Auto</string>
+    <string name="mode_portrait">Portrait</string>
+    <string name="mode_landscape">Landscape</string>
+    <string name="mode_portrait_flip">Upside down</string>
+    <string name="mode_landscape_flip">Landscape flipped</string>
+    <string name="mode_lock">Lock current</string>
+
+    <string name="sub_auto">All four directions</string>
+    <string name="sub_portrait">Upright</string>
+    <string name="sub_landscape">Sideways</string>
+    <string name="sub_portrait_flip">Portrait, flipped</string>
+    <string name="sub_landscape_flip">Sideways, other way</string>
+    <string name="sub_lock">Freeze as it is now</string>
+
+    <string name="cd_off">Turn off</string>
+
+    <string name="setup_title">Finish setup</string>
+    <string name="setup_overlay">Allow “Display over other apps” so Pivot can hold your orientation. Find Pivot in the list and switch it on.</string>
+    <string name="setup_notif">Allow notifications to get the quick orientation bar in your notification shade.</string>
+    <string name="allow">Allow</string>
+    <string name="toast_overlay">Find Pivot and turn on “Allow display over other apps”</string>
+
+    <string name="footer_tip">Pull down your notification shade for the quick bar, or add the Pivot tile to Quick Settings.</string>
+
+    <string name="channel_name">Orientation bar</string>
+    <string name="channel_desc">Quick orientation controls in the notification shade</string>
+</resources>
