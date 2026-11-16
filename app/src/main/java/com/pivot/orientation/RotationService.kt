@@ -188,6 +188,17 @@ class RotationService : Service() {
             .setContentTitle(getString(R.string.app_name))
             .setContentText(getString(mode.label))
             .setContentIntent(openApp)
+            // If the bar is swiped away, bring it straight back (the lock keeps running anyway).
+            .setDeleteIntent(
+                PendingIntent.getService(
+                    this,
+                    101,
+                    Intent(this, RotationService::class.java)
+                        .setAction(ACTION_SET)
+                        .putExtra(EXTRA_MODE, mode.id),
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                )
+            )
             .setCustomContentView(views)
             .setStyle(Notification.DecoratedCustomViewStyle())
             .setOngoing(true)

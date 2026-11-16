@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="0dp"
-    android:layout_height="match_parent"
+    android:layout_height="92dp"
     android:layout_weight="1"
-    android:background="@drawable/bg_mode"
+    android:background="@drawable/bg_tile"
     android:clickable="true"
     android:focusable="true"
-    android:minHeight="124dp"
+    android:gravity="center"
     android:orientation="vertical"
-    android:padding="18dp">
+    android:paddingStart="6dp"
+    android:paddingEnd="6dp">
 
     <ImageView
         android:id="@+id/icon"
@@ -17,25 +18,17 @@
         android:importantForAccessibility="no"
         android:tint="@color/icon_on_card" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
     <TextView
         android:id="@+id/label"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="9dp"
+        android:autoSizeMaxTextSize="13sp"
+        android:autoSizeMinTextSize="8sp"
+        android:autoSizeStepGranularity="1sp"
+        android:autoSizeTextType="uniform"
         android:fontFamily="sans-serif-medium"
-        android:textColor="@color/label_on_card"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/sub"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:textColor="@color/sub_on_card"
-        android:textSize="13sp" />
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/label_on_card" />
 </LinearLayout>

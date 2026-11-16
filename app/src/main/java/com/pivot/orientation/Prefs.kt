@@ -33,4 +33,11 @@ object Prefs {
     fun setNotifAsked(context: Context) {
         store(context).edit().putBoolean(KEY_NOTIF_ASKED, true).apply()
     }
+
+    fun batteryAsked(context: Context): Boolean =
+        store(context).getBoolean("battery_asked", false)
+
+    fun setBatteryAsked(context: Context) {
+        store(context).edit().putBoolean("battery_asked", true).apply()
+    }
 }

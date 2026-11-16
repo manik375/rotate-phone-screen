@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Pivot</string>
-    <string name="tagline">Hold your screen in any orientation.</string>
+    <string name="app_name_caps">PIVOT</string>
+    <string name="cap_on">LOCKED TO</string>
+    <string name="cap_off">SCREEN IS</string>
+    <string name="name_off">Following system</string>
+    <string name="btn_on">Turn on</string>
+    <string name="btn_off">Turn off</string>
 
     <string name="switch_title">Orientation lock</string>
     <string name="state_on">On</string>
@@ -14,21 +19,22 @@
     <string name="mode_portrait">Portrait</string>
     <string name="mode_landscape">Landscape</string>
     <string name="mode_portrait_flip">Upside down</string>
-    <string name="mode_landscape_flip">Landscape flipped</string>
-    <string name="mode_lock">Lock current</string>
+    <string name="mode_landscape_flip">Landscape flip</string>
+    <string name="mode_lock">Lock as is</string>
 
-    <string name="sub_auto">All four directions</string>
+    <string name="sub_auto">All directions</string>
     <string name="sub_portrait">Upright</string>
     <string name="sub_landscape">Sideways</string>
-    <string name="sub_portrait_flip">Portrait, flipped</string>
-    <string name="sub_landscape_flip">Sideways, other way</string>
-    <string name="sub_lock">Freeze as it is now</string>
+    <string name="sub_portrait_flip">Head down</string>
+    <string name="sub_landscape_flip">Other side</string>
+    <string name="sub_lock">Freeze current</string>
 
     <string name="cd_off">Turn off</string>
 
     <string name="setup_title">Finish setup</string>
     <string name="setup_overlay">Allow “Display over other apps” so Pivot can hold your orientation. Find Pivot in the list and switch it on.</string>
     <string name="setup_notif">Allow notifications to get the quick orientation bar in your notification shade.</string>
+    <string name="setup_battery">Let Pivot run without battery limits so your orientation stays locked until you turn it off.</string>
     <string name="allow">Allow</string>
     <string name="toast_overlay">Find Pivot and turn on “Allow display over other apps”</string>
 

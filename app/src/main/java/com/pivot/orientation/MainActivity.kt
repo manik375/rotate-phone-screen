@@ -8,12 +8,13 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
 import android.provider.Settings
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -22,10 +23,10 @@ import android.widget.Toast
 class MainActivity : Activity() {
 
     private val cards = LinkedHashMap<Mode, View>()
-    private lateinit var masterCard: View
-    private lateinit var toggle: View
-    private lateinit var knob: View
-    private lateinit var status: TextView
+    private lateinit var phone: PhoneView
+    private lateinit var caption: TextView
+    private lateinit var modeName: TextView
+    private lateinit var power: TextView
     private lateinit var setupCard: View
     private lateinit var setupText: TextView
     private lateinit var setupAction: TextView
@@ -48,29 +49,26 @@ class MainActivity : Activity() {
             WindowInsets.CONSUMED
         }
 
-        // Keep the layout readable on tablets and in landscape.
-        val content = findViewById<View>(R.id.content)
-        val maxWidth = dp(560)
-        if (resources.displayMetrics.widthPixels > maxWidth) {
-            (content.layoutParams as FrameLayout.LayoutParams).width = maxWidth
-        }
-
-        masterCard = findViewById(R.id.master_card)
-        toggle = findViewById(R.id.toggle)
-        knob = findViewById(R.id.knob)
-        status = findViewById(R.id.status)
+        phone = findViewById(R.id.phone)
+        caption = findViewById(R.id.caption)
+        modeName = findViewById(R.id.mode_name)
+        power = findViewById(R.id.power)
         setupCard = findViewById(R.id.setup_card)
         setupText = findViewById(R.id.setup_text)
         setupAction = findViewById(R.id.setup_action)
 
-        masterCard.setOnClickListener {
+        power.setOnClickListener {
             if (isActive()) Rotator.stop(this) else select(Prefs.mode(this))
         }
         setupAction.setOnClickListener {
-            if (!Settings.canDrawOverlays(this)) requestOverlayPermission() else askNotifications()
+            when (nextSetupStep()) {
+                STEP_OVERLAY -> requestOverlayPermission()
+                STEP_NOTIF -> askNotifications()
+                STEP_BATTERY -> askBattery()
+            }
         }
 
-        buildCards()
+        buildCards(animateIn = savedInstanceState == null)
         render(false)
     }
 
@@ -118,6 +116,7 @@ class MainActivity : Activity() {
             requestOverlayPermission()
             return
         }
+        window.decorView.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
         Rotator.start(this, mode)
         if (!hasNotificationPermission() && !Prefs.notifAsked(this)) {
             askNotifications()
@@ -163,14 +162,46 @@ class MainActivity : Activity() {
         }
     }
 
+    private fun askBattery() {
+        Prefs.setBatteryAsked(this)
+        try {
+            startActivity(
+                Intent(
+                    Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+                    Uri.parse("package:$packageName")
+                )
+            )
+        } catch (e: Exception) {
+            try {
+                startActivity(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
+            } catch (e2: Exception) {
+                // No settings screen available on this phone; nothing more to do.
+            }
+        }
+        render(false)
+    }
+
+    private fun isIgnoringBatteryLimits(): Boolean =
+        getSystemService(PowerManager::class.java).isIgnoringBatteryOptimizations(packageName)
+
+    private fun nextSetupStep(): Int = when {
+        !Settings.canDrawOverlays(this) -> STEP_OVERLAY
+        !hasNotificationPermission() -> STEP_NOTIF
+        !isIgnoringBatteryLimits() && !Prefs.batteryAsked(this) -> STEP_BATTERY
+        else -> STEP_NONE
+    }
+
     // ---- UI --------------------------------------------------------------------------------
 
-    private fun buildCards() {
+    private fun buildCards(animateIn: Boolean) {
         val grid = findViewById<LinearLayout>(R.id.grid)
+        grid.removeAllViews()
+        cards.clear()
         val inflater = LayoutInflater.from(this)
-        val gap = dp(12)
+        val gap = dp(10)
+        var index = 0
 
-        Mode.values().toList().chunked(2).forEachIndexed { rowIndex, rowModes ->
+        Mode.values().toList().chunked(3).forEachIndexed { rowIndex, rowModes ->
             val row = LinearLayout(this)
             row.orientation = LinearLayout.HORIZONTAL
             val rowParams = LinearLayout.LayoutParams(
@@ -187,10 +218,17 @@ class MainActivity : Activity() {
                 }
                 card.findViewById<ImageView>(R.id.icon).setImageResource(mode.icon)
                 card.findViewById<TextView>(R.id.label).setText(mode.label)
-                card.findViewById<TextView>(R.id.sub).setText(mode.sub)
                 card.setOnClickListener { select(mode) }
                 row.addView(card)
                 cards[mode] = card
+
+                if (animateIn) {
+                    card.alpha = 0f
+                    card.translationY = dp(18).toFloat()
+                    card.animate().alpha(1f).translationY(0f)
+                        .setStartDelay(120L + index * 55L).setDuration(380).start()
+                }
+                index++
             }
         }
     }
@@ -199,35 +237,33 @@ class MainActivity : Activity() {
         val active = isActive()
         val mode = Prefs.mode(this)
 
-        status.text = if (active) {
-            getString(R.string.status_on, getString(mode.label))
-        } else {
-            getString(R.string.status_off)
-        }
-        masterCard.contentDescription = getString(R.string.switch_title) + ", " +
-            getString(if (active) R.string.state_on else R.string.state_off)
+        phone.setState(mode, active, animate)
+        caption.setText(if (active) R.string.cap_on else R.string.cap_off)
+        modeName.setText(if (active) mode.label else R.string.name_off)
+        phone.contentDescription = getString(
+            if (active) R.string.status_on else R.string.status_off,
+            getString(mode.label)
+        )
 
-        toggle.isSelected = active
-        val direction = if (toggle.layoutDirection == View.LAYOUT_DIRECTION_RTL) -1f else 1f
-        val target = if (active) dp(22) * direction else 0f
-        if (animate) {
-            knob.animate().translationX(target).setDuration(160).start()
-        } else {
-            knob.translationX = target
-        }
+        power.isSelected = active
+        power.setText(if (active) R.string.btn_off else R.string.btn_on)
 
         for ((m, card) in cards) {
             card.isSelected = active && m == mode
         }
 
-        if (!Settings.canDrawOverlays(this)) {
-            setupText.setText(R.string.setup_overlay)
-            setupCard.visibility = View.VISIBLE
-        } else if (!hasNotificationPermission()) {
-            setupText.setText(R.string.setup_notif)
-            setupCard.visibility = View.VISIBLE
-        } else {
+        val step = nextSetupStep()
+        if (step == STEP_NONE) {
             setupCard.visibility = View.GONE
+        } else {
+            setupText.setText(
+                when (step) {
+                    STEP_OVERLAY -> R.string.setup_overlay
+                    STEP_NOTIF -> R.string.setup_notif
+                    else -> R.string.setup_battery
+                }
+            )
+            setupCard.visibility = View.VISIBLE
         }
     }
 
@@ -235,5 +271,9 @@ class MainActivity : Activity() {
 
     private companion object {
         const val REQ_NOTIFICATIONS = 1
+        const val STEP_NONE = 0
+        const val STEP_OVERLAY = 1
+        const val STEP_NOTIF = 2
+        const val STEP_BATTERY = 3
     }
 }
